@@ -16,3 +16,4 @@ def test_zero_state_is_all_zeroes_except_first():
     assert s[0] == 1
     assert np.allclose(s[1:], 0)
 
+

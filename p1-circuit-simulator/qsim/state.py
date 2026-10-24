@@ -9,3 +9,7 @@ def zero_state(n):
     # the rest have a probability of 0% for being a 0, as the amplitudes have now started oscillating
     state[0] = 1
     return state
+
+def apply_1q(state, gate):
+    # Matrix multiplication symbol is @
+    return state @ gate
