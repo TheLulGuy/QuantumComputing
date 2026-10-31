@@ -63,7 +63,6 @@ def test_hadamard_specific_two_qubit():
     expected = np.array([1, -1, 0, 0], dtype=complex) / np.sqrt(2)
     assert np.allclose(s, expected)
 
-
 def test_hadamard_specific_three_qubit():
     state = np.array([0, 0, 1, 0, 0, 0, 0, 0], dtype=complex)
     s = apply_gate_specific(state, H, 1)
