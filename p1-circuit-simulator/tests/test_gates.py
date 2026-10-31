@@ -1,5 +1,5 @@
 import numpy as np
-from qsim.state import zero_state, apply_1q
+from qsim.state import apply_gate_specific, zero_state, apply_1q, apply_gate_all
 from qsim.gates import H, X, Z
 
 # Tests on H gate
@@ -41,5 +41,31 @@ def test_hzh_flips_zero_to_one():
 
 def test_hxh_on_zero():
     s = apply_1q(apply_1q(apply_1q(zero_state(1), H), X), H)
-    expected = zero_state(1) # hxh returns the same result as input
+    expected = zero_state(1) # hxh returns the same result as input for |0|, acts as Z
+    assert np.allclose(s, expected)
+
+#? Tests for Kronecker Product
+# apply_gate_all
+def test_hadamard_two_qubit():
+    s = apply_gate_all(zero_state(2), H)
+    expected = np.array([1, 1, 1, 1], dtype=complex) / 2
+    print(s)
+    assert np.allclose(s, expected)
+
+def test_hadamard_three_qubit():
+    s = apply_gate_all(zero_state(3), H)
+    expected = np.array([1 for item in range(8)], dtype=complex) / (np.sqrt(2) * 2)
+    assert np.allclose(s, expected)
+
+# apply_gate_specific
+def test_hadamard_specific_two_qubit():
+    s = apply_gate_specific(np.array([0, 1, 0, 0], dtype=complex), H, 1)
+    expected = np.array([1, -1, 0, 0], dtype=complex) / np.sqrt(2)
+    assert np.allclose(s, expected)
+
+
+def test_hadamard_specific_three_qubit():
+    state = np.array([0, 0, 1, 0, 0, 0, 0, 0], dtype=complex)
+    s = apply_gate_specific(state, H, 1)
+    expected = np.array([1, 0, -1, 0, 0, 0, 0, 0], dtype=complex) / np.sqrt(2)
     assert np.allclose(s, expected)

@@ -13,10 +13,26 @@ def zero_state(n):
 
 def apply_1q(state, gate):
     # Matrix multiplication symbol is @
-    return state @ gate
+    return gate @ state
 
 # Prototype for making a universal gate
-# def apply_nq(state, gate):
-#     from qsim.gates import X
-#     qubits = math.log2(len(state))
-#     print(qubits)
+def apply_gate_all(state, gate):
+    length = int(math.log2(len(state)))
+
+    final_gate = 1
+    for item in range(length):
+        final_gate = np.kron(final_gate, gate)
+
+    return final_gate @ state
+
+def apply_gate_specific(state, gate, k):
+    length = int(math.log2(len(state)))
+    I = np.eye(2, dtype=complex)
+    final_gate = 1
+    for index in range(length):
+        if index == k:
+            temp = gate
+        else:
+            temp = I
+        final_gate = np.kron(final_gate, temp)
+    return final_gate @ state
