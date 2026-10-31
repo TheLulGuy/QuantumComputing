@@ -36,3 +36,17 @@ def apply_gate_specific(state, gate, k):
             temp = I
         final_gate = np.kron(final_gate, temp)
     return final_gate @ state
+
+def apply_gate_fast_specific(state, gate, k):
+    length = int(math.log2(len(state)))
+    # This makes it into a cube, or x axis
+    # e.g. 3 qubits - 2x2x2
+    # e.g. 4 qubits - 2x2x2x2
+    dimensional_matrix = state.reshape([2] * length)
+    result = np.tensordot(gate, dimensional_matrix, axes=([1], [k]))
+    # After tensordot, the qubits axis' get reversed due to the way multiplication happens with the function
+    # so we have to reverse it and then reshape
+    # e.g. qubit 2, then 1, then 0 appears. we reverse the axis'
+    result = np.moveaxis(result, 0, k)
+    result = result.reshape([2**length])
+    return result
