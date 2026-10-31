@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 def zero_state(n):
     # initializing 2**n number of 0's, for n number of qubits
@@ -13,3 +14,9 @@ def zero_state(n):
 def apply_1q(state, gate):
     # Matrix multiplication symbol is @
     return state @ gate
+
+# Prototype for making a universal gate
+# def apply_nq(state, gate):
+#     from qsim.gates import X
+#     qubits = math.log2(len(state))
+#     print(qubits)
