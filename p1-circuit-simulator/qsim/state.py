@@ -1,5 +1,6 @@
 import numpy as np
 import math
+from qsim.gates import CNOT
 
 def zero_state(n):
     # initializing 2**n number of 0's, for n number of qubits
@@ -37,26 +38,32 @@ def apply_gate_specific(state, gate, k):
         final_gate = np.kron(final_gate, temp)
     return final_gate @ state
 
-def apply_gate_fast_specific(state, gate, k):
+def apply_gate_fast(state, gate, targets):
     length = int(math.log2(len(state)))
     # This makes it into a cube, or x axis
     # e.g. 3 qubits - 2x2x2
     # e.g. 4 qubits - 2x2x2x2
-    dimensional_matrix = state.reshape([2] * length)
-    result = np.tensordot(gate, dimensional_matrix, axes=([1], [k]))
-    # After tensordot, the qubits axis' get reversed due to the way multiplication happens with the function
-    # so we have to reverse it and then reshape
-    # e.g. qubit 2, then 1, then 0 appears. we reverse the axis'
-    result = np.moveaxis(result, 0, k)
-    result = result.reshape([2**length])
-    return result
 
-def apply_gate_fast_all(state, gate):
-    length = int(math.log2(len(state)))
     dimensional_matrix = state.reshape([2] * length)
-    for axis in range(length):
+    for axis in targets:
+        # After tensordot, the qubits axis' get reversed due to the way multiplication happens with the function
+        # so we have to reverse it and then reshape
+        # e.g. qubit 2, then 1, then 0 appears. we reverse the axis'
+
         dimensional_matrix = np.tensordot(gate, dimensional_matrix, axes=([1], [axis]))
         dimensional_matrix = np.moveaxis(dimensional_matrix, 0, axis)
 
     result = dimensional_matrix.reshape([2**length])
     return result
+    
+def apply_gate_fast_specific(state, gate, k):
+    if type(k) == int:
+        return apply_gate_fast(state, gate, [k])
+    elif type(k) == list:
+        return apply_gate_fast(state, gate, k)
+    else:
+        return -1
+
+def apply_gate_fast_all(state, gate):
+    length = int(math.log2(len(state)))
+    return apply_gate_fast(state, gate, [item for item in range(length)])

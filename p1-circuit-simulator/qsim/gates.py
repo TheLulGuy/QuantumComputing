@@ -23,3 +23,10 @@ Y = np.array([
     [0, -1j],
     [1j, 0]
 ], dtype=complex)
+
+CNOT = np.array([
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 0, 1],
+    [0, 0, 1, 0]
+], dtype=complex)

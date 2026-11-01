@@ -1,6 +1,6 @@
 import numpy as np
 from qsim.state import apply_gate_specific, zero_state, apply_1q, apply_gate_all
-from qsim.gates import H, X, Y, Z
+from qsim.gates import H, X, Y, Z, CNOT
 
 # Tests on H gate
 def test_h_on_zero_gives_equal_amplitudes():
@@ -79,3 +79,15 @@ def test_hadamard_specific_three_qubit():
     s = apply_gate_specific(state, H, 1)
     expected = np.array([1, 0, -1, 0, 0, 0, 0, 0], dtype=complex) / np.sqrt(2)
     assert np.allclose(s, expected)
+
+
+# CNOT gate tests
+def test_cnot_10_to_11():
+    s = np.array([0, 0, 1, 0], dtype=complex)
+    expected = np.array([0, 0, 0, 1], dtype=complex)
+    assert np.allclose(CNOT @ s, expected)
+
+def test_cnot_keeps_first_qubit():
+    s = np.array([1, 1, 0, 0], dtype=complex)
+    assert np.allclose(CNOT @ s, s)
+
