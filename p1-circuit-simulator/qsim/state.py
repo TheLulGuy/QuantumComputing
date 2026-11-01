@@ -40,30 +40,39 @@ def apply_gate_specific(state, gate, k):
 
 def apply_gate_fast(state, gate, targets):
     length = int(math.log2(len(state)))
+    # How many axes the gates will target at once(specific handles one at a time)
+    # This refactor was made to facilitate gates like CNOT that do operations on multiple qubits at once
+    m = len(targets)
+    
     # This makes it into a cube, or x axis
     # e.g. 3 qubits - 2x2x2
     # e.g. 4 qubits - 2x2x2x2
 
     dimensional_matrix = state.reshape([2] * length)
-    for axis in targets:
-        # After tensordot, the qubits axis' get reversed due to the way multiplication happens with the function
-        # so we have to reverse it and then reshape
-        # e.g. qubit 2, then 1, then 0 appears. we reverse the axis'
 
-        dimensional_matrix = np.tensordot(gate, dimensional_matrix, axes=([1], [axis]))
-        dimensional_matrix = np.moveaxis(dimensional_matrix, 0, axis)
+    # Reshapes gate to match m number of parallel operations on m qubits at once
+    gate = gate.reshape([2] * (2 * m))
 
-    result = dimensional_matrix.reshape([2**length])
+    # After tensordot, the qubits axis' get reversed due to the way gate multiplication happens with the function
+    # so we have to put the qubits in the correct order thru moveaxis
+    # e.g. qubit 2, then 1, then 0 appears. we reverse the axis'
+    dimensional_matrix = np.tensordot(gate, dimensional_matrix, axes=(list(range(m, 2*m)), targets))
+    dimensional_matrix = np.moveaxis(dimensional_matrix, list(range(m)), targets)
+
+    result = dimensional_matrix.reshape(2**length)
     return result
     
 def apply_gate_fast_specific(state, gate, k):
-    if type(k) == int:
+    if isinstance(k, (int, np.integer)):
         return apply_gate_fast(state, gate, [k])
-    elif type(k) == list:
+    if isinstance(k, list):
         return apply_gate_fast(state, gate, k)
     else:
-        return -1
+        raise TypeError('The gate number should be an integer or a list')
 
 def apply_gate_fast_all(state, gate):
     length = int(math.log2(len(state)))
-    return apply_gate_fast(state, gate, [item for item in range(length)])
+    for axis in range(length):
+        state = apply_gate_fast(state, gate, [axis])
+
+    return state

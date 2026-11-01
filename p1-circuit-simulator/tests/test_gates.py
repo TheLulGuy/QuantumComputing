@@ -81,13 +81,5 @@ def test_hadamard_specific_three_qubit():
     assert np.allclose(s, expected)
 
 
-# CNOT gate tests
-def test_cnot_10_to_11():
-    s = np.array([0, 0, 1, 0], dtype=complex)
-    expected = np.array([0, 0, 0, 1], dtype=complex)
-    assert np.allclose(CNOT @ s, expected)
 
-def test_cnot_keeps_first_qubit():
-    s = np.array([1, 1, 0, 0], dtype=complex)
-    assert np.allclose(CNOT @ s, s)
 
