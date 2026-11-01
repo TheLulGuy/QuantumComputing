@@ -1,6 +1,6 @@
 import numpy as np
 from qsim.state import apply_gate_specific, zero_state, apply_1q, apply_gate_all
-from qsim.gates import H, X, Z
+from qsim.gates import H, X, Y, Z
 
 # Tests on H gate
 def test_h_on_zero_gives_equal_amplitudes():
@@ -33,7 +33,18 @@ def test_z_on_zero_gives_zero():
     s = apply_1q(zero_state(1), Z)
     assert np.allclose(s, zero_state(1))
 
-# Combination tests
+# Test on Y gate
+def test_y_on_zero():
+    s = apply_1q(zero_state(1), Y)
+    expected = np.array([0, 1j], dtype=complex)
+    assert np.allclose(s, expected)
+
+def test_y_on_zero_twice():
+    state = np.array([0.8, 0.6], dtype=complex)
+    s = apply_1q(apply_1q(state, Y), Y)
+    assert np.allclose(s, state)
+
+#? Combination tests
 def test_hzh_flips_zero_to_one():
     s = apply_1q(apply_1q(apply_1q(zero_state(1), H), Z), H)
     expected = np.array([0, 1], dtype=complex)

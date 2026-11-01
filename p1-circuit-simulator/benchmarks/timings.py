@@ -42,7 +42,7 @@ for item in range(3):
 print()
 print("Benchmark for the fast method")
 print("qubits  seconds     peak MB")
-for item in range(10):
+for item in range(20):
     n = 12 + item
     state = zero_state(n)
     seconds = time_it(apply_gate_fast_specific, state, repeats=5)

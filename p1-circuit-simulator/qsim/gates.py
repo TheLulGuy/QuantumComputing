@@ -16,3 +16,10 @@ Z = np.array([
     [1, 0],
     [0, -1]
 ], dtype=complex)
+
+# Z * X = i * Y
+# Y gate does a bit flip and a phase flip
+Y = np.array([
+    [0, -1j],
+    [1j, 0]
+], dtype=complex)

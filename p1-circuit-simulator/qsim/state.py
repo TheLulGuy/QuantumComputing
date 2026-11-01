@@ -55,8 +55,8 @@ def apply_gate_fast_all(state, gate):
     length = int(math.log2(len(state)))
     dimensional_matrix = state.reshape([2] * length)
     for axis in range(length):
-        result = np.tensordot(gate, dimensional_matrix, axes=([1], [axis]))
-        result = np.moveaxis(result, 0, axis)
+        dimensional_matrix = np.tensordot(gate, dimensional_matrix, axes=([1], [axis]))
+        dimensional_matrix = np.moveaxis(dimensional_matrix, 0, axis)
 
-    result = result.reshape([2**length])
+    result = dimensional_matrix.reshape([2**length])
     return result
