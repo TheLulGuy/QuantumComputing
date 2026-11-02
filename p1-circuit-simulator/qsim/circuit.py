@@ -6,9 +6,11 @@ class Circuit:
         self.n = n
         self.operations = []
 
-
     def add(self, gate, targets):
         targets = list(targets)
+        for item in targets:
+            if item not in range(self.n):
+                raise TypeError('Emter a valid target')
         self.operations.append((gate, targets))
         return self
 
@@ -20,21 +22,31 @@ class Circuit:
         return self.state
 
     def h(self, q):
-        self.add(H, [q])
-        return self
+        return self.add(H, [q])
 
     def x(self, q):
-        self.add(X, [q])
-        return self
+        return self.add(X, [q])
 
     def y(self, q):
-        self.add(Y, [q])
-        return self
+        return self.add(Y, [q])
 
     def z(self, q):
-        self.add(Z, [q])
-        return self
+        return self.add(Z, [q])
 
     def cx(self, c, t):
-        self.add(CNOT, (c, t))
-        return self
+        return self.add(CNOT, (c, t))
+
+
+    def gate_count(self):
+        return len(self.operations)
+
+    def depth(self):
+        levels = [0] * self.n
+        for(gate, targets) in self.operations:
+            # Applies the max value between the targets
+            layer = max(levels[q] for q in targets)
+            layer += 1
+            for q in targets:
+                levels[q] = layer
+
+        return max(levels)
