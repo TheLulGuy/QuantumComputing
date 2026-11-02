@@ -1,6 +1,6 @@
 from qsim.state import *
 from qsim.gates import *
+from qsim.circuit import Circuit
 
-s = zero_state(2)
-
-print(apply_gate_fast_specific(s, H, 0))
+c = Circuit(2).h(0).cx(0, 1)
+print(c.run())
