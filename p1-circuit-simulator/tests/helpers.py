@@ -1,5 +1,5 @@
 import numpy as np
-
+from qsim.gates import CNOT
 def random_state(n):
     rng = np.random.default_rng(n)
     state = rng.normal(size=2**n) + 1j * rng.normal(size=2**n)
