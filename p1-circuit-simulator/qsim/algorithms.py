@@ -27,7 +27,7 @@ def dj_algorithmn(f, n, verbose=False):
         c.h(item)
 
     # Adds the oracle as the middle operation
-    c.add(build_oracle(f, n), list(range(n+1)))
+    c.add(build_oracle(f, n), list(range(n+1)), 'oracle')
 
     # H on only the n input qubits only
     for item in range(n):
