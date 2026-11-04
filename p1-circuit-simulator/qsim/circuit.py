@@ -10,10 +10,11 @@ class Circuit:
     def add(self, gate, targets, name='CUSTOM'):
         if not isinstance(targets, list):
             targets = list(targets)
-
+        if len(set(targets)) != len(targets):
+            raise ValueError('Targets must be different qubits')
         for item in targets:
             if item not in range(self.n):
-                raise TypeError('Enter a valid target')
+                raise ValueError('Enter a valid target')
         self.operations.append((gate, targets, name))
         return self
 
@@ -29,17 +30,30 @@ class Circuit:
 
         return self.state
 
+    def on_all(self, gate, name):
+        for q in range(self.n):
+            self.add(gate, [q], name)
+        return self
+    
     def h(self, q):
         return self.add(H, [q], 'H')
-
+    def h_all(self):
+        return self.on_all(H, 'H')
+    
     def x(self, q):
         return self.add(X, [q], 'X')
-
+    def x_all(self):
+        return self.on_all(X, 'X')
+    
     def y(self, q):
         return self.add(Y, [q], 'Y')
-
+    def y_all(self):
+        return self.on_all(Y, 'Y')
+    
     def z(self, q):
         return self.add(Z, [q], 'Z')
+    def z_all(self):
+        return self.on_all(Z, 'Z')
 
     def cx(self, c, t):
         return self.add(CNOT, (c, t), 'CNOT')
