@@ -1,6 +1,5 @@
-from qsim.state import zero_state
 from qsim.circuit import Circuit
-from qsim.gates import H
+from qsim.measure import marginal_probabilities
 import numpy as np
 
 def build_oracle(f, n):
