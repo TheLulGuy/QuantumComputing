@@ -50,7 +50,7 @@ class Circuit:
 
     def depth(self):
         levels = [0] * self.n
-        for(gate, targets) in self.operations:
+        for(_, targets, _) in self.operations:
             # Applies the max value between the targets
             layer = max(levels[q] for q in targets)
             layer += 1
