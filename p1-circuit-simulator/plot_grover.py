@@ -3,6 +3,10 @@ from qsim.algorithms import grover, grover_circuit, optimal_iterations
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Creating result directory
+import os
+os.makedirs('results_grover_plot', exist_ok=True)
+
 # Control
 marked = 6
 n = 4
@@ -15,7 +19,9 @@ for item in k:
     probs.append(probabilities(state)[marked])
 
 best_k = optimal_iterations(n)
-print(probs)
+c = grover_circuit(marked, n)
+print('Gates', c.gate_count())
+print('Depth', c.depth())
 plt.plot(k, probs, marker='o')
 plt.title(f'Grover plo n={n} marked={marked}')
 plt.xlabel('Number of iterations(upto 10)')

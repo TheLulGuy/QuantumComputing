@@ -48,7 +48,7 @@ The Fast method includes reshape to 2 * n dimensions(tensor of specified bits as
 ```python
 # Generation of bell state using Circuit class
 from qsim.circuit import Circuit
-c = Circuit(2).h(0).h(1).cnot(0, 1)
+c = Circuit(2).h(0).cx(0, 1)
 
 # If you want a verbose output of the calculations that are happening behind the scenes
 print(c.run(verbose=True))
@@ -56,6 +56,15 @@ print(c.run(verbose=True))
 # Base circuit execution
 print(c.run())
 ```
+
+## How to run pytest
+Switch to root folder('p1-circuit-simulator') if you arent already there
+Then run
+```bash
+pytest
+```
+in the terminal
+
 ## Algorithms
 
 ### Deutsch Jozsa algorithm
@@ -79,3 +88,19 @@ This algorithm finds which door contains it, by changing the amplitude of the co
 The above steps are repeated until the highest probability of the correct answer will be reached in a specified number of steps(around $\frac{\pi}{4} \sqrt{N}$)
 Time complexity is the number of rounds taken --> $\frac{\pi}{4} \sqrt{N}$
 
+## Conventions
+
+- **Qubit numbering** - qubit 0 is the *leftmost* bit(indexing format used in coding)
+                    ; The class Circuit takes normal n inputs of qubits
+                    - E.g. Circuit(3) is a circuit for 3 qubits
+
+- **Gate application** - gates act on `gates @ state`
+
+## Results
+
+![Grover success probability vs iterations](results_grover_plot/grover_success.png)
+*Grover probability peaks at around √N rounds, then falls - more iterations past that point drop to near zero, and cycle back to the same peak*
+
+A Grover circuit for n=4, marked=6 compiles to:
+- Gate count: `70`
+- Depth: `25`
