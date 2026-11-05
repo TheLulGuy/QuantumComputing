@@ -41,7 +41,7 @@ Benchmark for the fast method
 | 20 | 0.010391 | 33.56 |
 | 21 | 0.021196 | 67.11 |
 
-### Reason why fast method is superiod 
+### Reason why fast method is superior
 The Fast method includes reshape to 2 * n dimensions(tensor of specified bits as dimension, e.g. 2x2 for 2 qubits, 2x2x2x2 for 4 qubits) and tensordot, giving a 2**n speedup(exponential speedup) compared to Kronecker product, with less ram usage
 ## Example usage
 
