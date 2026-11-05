@@ -104,3 +104,21 @@ Time complexity is the number of rounds taken --> $\frac{\pi}{4} \sqrt{N}$
 A Grover circuit for n=4, marked=6 compiles to:
 - Gate count: `70`
 - Depth: `25`
+
+## Layout
+
+```
+qsim/
+  gates.py       H, X, Y, Z, CNOT matrices
+  state.py       zero_state, Kronecker apply, fast (tensordot) apply
+  measure.py     probabilities, sample, marginal_probabilities
+  circuit.py     Circuit class: gate recording, run, gate_count, depth
+  algorithms.py  Deutsch-Jozsa, Grover, oracle builders
+tests/           pytest suite, one file per module above
+benchmarks/      timings.py - Kronecker vs fast method benchmark
+plot_grover.py   generates results_grover_plot/grover_success.png
+```
+
+## Limitations
+
+State vector size grows as `2^n`, so does memory. The benchmark table above already shows 21 qubits at 67 MB with the fast method - each extra qubit roughly doubles that, so this simulator tops out at around 25-27 qubits on a typical machine before running out of RAM. The Kronecker method is far more limited still, failing by 14 qubits.
