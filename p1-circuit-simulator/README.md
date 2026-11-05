@@ -43,7 +43,19 @@ Benchmark for the fast method
 
 ### Reason why fast method is superiod 
 The Fast method includes reshape to 2 * n dimensions(tensor of specified bits as dimension, e.g. 2x2 for 2 qubits, 2x2x2x2 for 4 qubits) and tensordot, giving a 2**n speedup(exponential speedup) compared to Kronecker product, with less ram usage
+## Example usage
 
+```python
+# Generation of bell state using Circuit class
+from qsim.circuit import Circuit
+c = Circuit(2).h(0).h(1).cnot(0, 1)
+
+# If you want a verbose output of the calculations that are happening behind the scenes
+print(c.run(verbose=True))
+
+# Base circuit execution
+print(c.run())
+```
 ## Algorithms
 
 ### Deutsch Jozsa algorithm
