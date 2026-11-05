@@ -3,6 +3,10 @@ from qsim.measure import marginal_probabilities, sample
 import math
 import numpy as np
 
+def optimal_iterations(n):
+    return round(math.pi/ (4 * math.asin(1 / math.sqrt(2 ** n))) - 0.5)
+
+
 def build_oracle(f, n):
     size = 2 ** (n + 1)
     U = np.zeros((size, size), dtype=complex)
@@ -48,7 +52,7 @@ def grover_circuit(marked, n, iterations=None):
         raise ValueError("Marked must be a valid state within the given qubits")
 
     if iterations == None:
-        iterations = max(1, round(math.pi/ (4 * math.asin(1 / math.sqrt(2 ** n))) - 0.5))
+        iterations = max(1, optimal_iterations(n))
 
     qubits = list(range(n))
 

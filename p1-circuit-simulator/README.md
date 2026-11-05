@@ -1,0 +1,61 @@
+
+
+- Added the following gates
+  - H
+  - X
+  - Z
+
+Circuit applies Kronicker factor to calculate gates for
+- All qubits
+- Specific qubits
+
+Circuit also uses fast factor method to calculate gates for
+- All qubits
+- Specific qubits 
+
+Benchmark for the Kronecker method
+
+| qubits | seconds | peak MB |
+|---:|---:|---:|
+| 12 | 0.1833 | 335.8 |
+| 13 | 0.7013 | 1342.4 |
+| 14 | ran out of memory (expected) | — |
+
+Benchmark for the fast method
+
+| qubits | seconds | peak MB |
+|---:|---:|---:|
+| 12 | 0.000037 | 0.13 |
+| 13 | 0.000036 | 0.26 |
+| 14 | 0.000193 | 0.53 |
+| 15 | 0.000546 | 1.05 |
+| 16 | 0.000767 | 2.10 |
+| 17 | 0.001240 | 4.20 |
+| 18 | 0.002053 | 8.39 |
+| 19 | 0.004727 | 16.78 |
+| 20 | 0.010391 | 33.56 |
+| 21 | 0.021196 | 67.11 |
+
+## Algorithms
+
+### Deutsch Jozsa algorithm
+Mainly used as a prop tool to explain why a qubit can be superior to a classical bit in specific scenarios, it is an amazing and effective tool at showing entanglement and interference in process, by using balanced and constant states
+
+A good analogy would be using doors, and there is a specific amount of gold hidden behind the doors
+Either there is gold in an equal amount of doors as there is none(half half, thus balanced)
+Or there is no gold(constant)
+Or they all contain gold(constant as well)
+
+Our job is to figure out which type of combination the doors have, in the least amount of steps possible
+A classic bit would need 2**(n - 1) + 1 checks, as it would need to check every door and remember it
+This algorithm does it in ONE STEP, a time complexity of O(1) irrespective on the number of bits
+
+### Grover algorithm
+Using the same analogies as before
+Similar to the Deutsch Jozsa, but it differs in a key way - only one door will contain 'gold', and the others will not
+This algorithm finds which door contains it, by changing the amplitude of the correct answer and flipping it using average amplitudes of the other states. It does so in these two steps
+- Phase flip using the oracle(marks the 'door' that contains gold)
+- Diffusion --> reflects amplitude about the mean of all amplitudes
+The above steps are repeated until the highest probability of the correct answer will be reached in a specified number of steps(around $\frac{\pi}{4} \sqrt{N}$)
+Time complexity is the number of rounds taken --> $\frac{\pi}{4} \sqrt{N}$
+
