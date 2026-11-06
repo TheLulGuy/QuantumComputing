@@ -98,7 +98,7 @@ Time complexity is the number of rounds taken --> $\frac{\pi}{4} \sqrt{N}$
 
 ## Results
 
-![Grover success probability vs iterations](results_grover_plot/grover_success.png)
+![Grover success probability vs iterations](results_grover_plot/grover_success.png)  
 *Grover probability peaks at around √N rounds, then falls - more iterations past that point drop to near zero, and cycle back to the same peak*
 
 A Grover circuit for n=4, marked=6 compiles to:
